@@ -12,7 +12,7 @@ telaTransparency = pygame.Surface((larguraTela, alturaTela), pygame.SRCALPHA)
 
 pygame.display.set_caption("Trabalho 1 de Computação Gráfica")
 
-imagemBackground = pygame.image.load(r'C:\Users\Assistencia\Downloads\CGAnimation\Imagens\Backrooms_model.jpg')
+imagemBackground = pygame.image.load('/home/yago/Downloads/CGAnimation/Imagens/Backrooms_model.jpg')
 background = pygame.transform.scale(imagemBackground, (larguraTela, alturaTela))
 
 def desenharQuadrados():
@@ -65,7 +65,7 @@ def desenharFlor():
     pygame.draw.circle(tela, (241, 232, 51), (424, 412), 10)
     pygame.draw.circle(tela, (255, 255, 255), (424, 412), 6)
 
-def desenharMoedaSonic():
+def desenharMoeda():
     pygame.draw.circle(tela, (255, 255, 0), (548, 70), 19)
     pygame.draw.circle(tela, (0, 0, 0), (548, 70), 19, width=2)
 
@@ -122,9 +122,9 @@ def desenharBolaDeFogo():
     pygame.draw.arc(tela, (241, 232, 51),  (470, 195, 100, 100), 0, 3.14/2, width=5)
 
 def desenharNuvem():
-    pygame.draw.rect(telaTransparency, (255, 255, 255, 120), (800, 100, 300, 100), border_radius = 50)
-    pygame.draw.rect(telaTransparency, (255, 255, 255, 120), (200, 100, 200, 100), border_radius = 50)
-    pygame.draw.rect(telaTransparency, (255, 255, 255, 120), (500, 90, 215, 90), border_radius = 50)
+    pygame.draw.rect(telaTransparency, (255, 255, 255, 120), (800, 100, 300, 50), border_radius = 50)
+    pygame.draw.rect(telaTransparency, (255, 255, 255, 120), (200, 100, 200, 50), border_radius = 50)
+    pygame.draw.rect(telaTransparency, (255, 255, 255, 120), (500, 90, 215, 40), border_radius = 50)
 
     cor_ceu = (135, 206, 235)  
     cor_fundo = (0, 0, 0, 0)  
@@ -164,30 +164,47 @@ def desenharCriatura():
     pygame.draw.arc(tela, cor_preto, (posicao_x - 10, posicao_y + 5, 20, 10), 0, 3.14, 3)
 
 def desenharPrincipal(posicao_x, posicao_y):
-    sonic_image = pygame.image.load(r'C:\Users\Assistencia\Downloads\CGAnimation\Imagens\Sonic.png')  
+    sonic_image = pygame.image.load('/home/yago/Downloads/CGAnimation/Imagens/Sonic.png')  
     tela.blit(sonic_image, (posicao_x, posicao_y))
 
+def desenharAnelSonic():
+    sonic_image = pygame.image.load('/home/yago/Downloads/CGAnimation/Imagens/pngwing.png')  
+    tela.blit(sonic_image, (535, 45))
+    tela.blit(sonic_image, (587, 45))
+    tela.blit(sonic_image, (637, 45))
+
 def desenharPorta():
-    pygame.draw.rect(tela, (150, 75, 0), (970, 450, 100, 200))
-    pygame.draw.rect(tela, (0, 0, 0), (970, 450, 100, 200), 2)
-    pygame.draw.circle(tela, (0, 0, 0), (1050, 550), 8)
-    pygame.draw.rect(tela, (0, 0, 0), (985, 460, 70, 70), 2)
-    pygame.draw.rect(tela, (0, 0, 0), (985, 570, 70, 70), 2)
+    x = 900
+    pygame.draw.rect(tela, (150, 75, 0), (970-x, 450, 100, 200))
+    pygame.draw.rect(tela, (0, 0, 0), (970-x, 450, 100, 200), 2)
+    pygame.draw.circle(tela, (0, 0, 0), (1050-x, 550), 8)
+    pygame.draw.rect(tela, (0, 0, 0), (985-x, 460, 70, 70), 2)
+    pygame.draw.rect(tela, (0, 0, 0), (985-x, 570, 70, 70), 2)
+
+def desenharGradiente(cor1, cor2):
+    for y in range(alturaTela):
+        interp_r = int(cor1[0] * (1 - y / alturaTela) + cor2[0] * (y / alturaTela))
+        interp_g = int(cor1[1] * (1 - y / alturaTela) + cor2[1] * (y / alturaTela))
+        interp_b = int(cor1[2] * (1 - y / alturaTela) + cor2[2] * (y / alturaTela))
+
+        cor = (interp_r, interp_g, interp_b, 50)  
+        pygame.draw.rect(telaTransparency, cor, (0, y, larguraTela, 1))
 
 run = True
 while run:
     tela.blit(background, (0, 0))
     tela.blit(telaTransparency, (0,0))
     
+    desenharGradiente((0, 0, 0), (0, 0, 0))
     desenharNuvem()
     desenharCanos()
     desenharPlanta()
-    desenharMoedaSonic()
     desenharCobra()
     desenharPlantaCarnivora()
-    desenharPrincipal(115, 500)
+    desenharPrincipal(300, 500)
     desenharCriatura()
     desenharPorta()
+    desenharAnelSonic()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
